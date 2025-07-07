@@ -57,78 +57,80 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         child: SafeArea(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.person_add, size: 60, color: CustomAppColors.neonGreen),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Create Your Fit Tracker Account",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: CustomAppColors.textPrimary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.1,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  _buildInputField(
-                    controller: _emailController,
-                    label: "Email",
-                    icon: Icons.email,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    controller: _passwordController,
-                    label: "Password",
-                    icon: Icons.lock,
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    controller: _confirmPasswordController,
-                    label: "Confirm Password",
-                    icon: Icons.lock_outline,
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: register,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomAppColors.buttonPrimary,
-                      foregroundColor: CustomAppColors.buttonText,
-                      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 8,
-                    ),
-                    child: const Text(
-                      "REGISTER",
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.person_add, size: 60, color: CustomAppColors.neonGreen),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Create Your Fit Tracker Account",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
+                        color: CustomAppColors.textPrimary,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        letterSpacing: 1.1,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context); // Go back to login
-                    },
-                    child: const Text(
-                      "Already have an account? Login here",
-                      style: TextStyle(
-                        color: CustomAppColors.textSecondary,
-                        fontSize: 14,
-                        decoration: TextDecoration.underline,
+                    const SizedBox(height: 30),
+                    _buildInputField(
+                      controller: _emailController,
+                      label: "Email",
+                      icon: Icons.email,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildInputField(
+                      controller: _passwordController,
+                      label: "Password",
+                      icon: Icons.lock,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildInputField(
+                      controller: _confirmPasswordController,
+                      label: "Confirm Password",
+                      icon: Icons.lock_outline,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: register,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomAppColors.buttonPrimary,
+                        foregroundColor: CustomAppColors.buttonText,
+                        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 8,
+                      ),
+                      child: const Text(
+                        "REGISTER",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  )
-                ],
+                    const SizedBox(height: 30),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context); // Go back to login
+                      },
+                      child: const Text(
+                        "Already have an account? Login here",
+                        style: TextStyle(
+                          color: CustomAppColors.textSecondary,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

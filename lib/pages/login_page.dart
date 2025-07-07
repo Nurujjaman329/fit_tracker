@@ -1,4 +1,5 @@
 import 'package:fit_tracker/auth/auth_service.dart';
+import 'package:fit_tracker/pages/profile_page.dart';
 import 'package:fit_tracker/pages/register_page.dart';
 import 'package:fit_tracker/utils/custom_app_colors.dart';
 import 'package:flutter/material.dart';
@@ -15,18 +16,37 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void login() async {
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
+void login() async {
+  final email = _emailController.text.trim();
+  final password = _passwordController.text;
 
-    try {
-      await authService.signInWithEmailPassword(email, password);
-    } catch (e) {
+  try {
+    await authService.signInWithEmailPassword(email, password);
+
+    // Navigate after login success
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ProfilePage(),
+      ),
+    );
+
+    // Show success message after navigation
+    Future.delayed(const Duration(milliseconds: 500), () {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
+        const SnackBar(
+          content: Text('Login successful!'),
+          backgroundColor: Colors.green,
+        ),
       );
-    }
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Login failed: $e')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,73 +65,75 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: SafeArea(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.fitness_center, size: 60, color: CustomAppColors.neonGreen),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Welcome Back, Champion!",
-                    style: TextStyle(
-                      color: CustomAppColors.textPrimary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  _buildInputField(
-                    controller: _emailController,
-                    label: "Email",
-                    icon: Icons.email,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    controller: _passwordController,
-                    label: "Password",
-                    icon: Icons.lock,
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomAppColors.buttonPrimary,
-                      foregroundColor: CustomAppColors.buttonText,
-                      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 8,
-                    ),
-                    child: const Text(
-                      "LOGIN",
+            child: SingleChildScrollView(
+              child: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.fitness_center, size: 60, color: CustomAppColors.neonGreen),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Welcome Back, Champion!",
                       style: TextStyle(
+                        color: CustomAppColors.textPrimary,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        letterSpacing: 1.2,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const RegisterPage()),
-                      );
-                    },
-                    child: const Text(
-                      "Don't have an account? Register here",
-                      style: TextStyle(
-                        color: CustomAppColors.textSecondary,
-                        fontSize: 14,
-                        decoration: TextDecoration.underline,
+                    const SizedBox(height: 30),
+                    _buildInputField(
+                      controller: _emailController,
+                      label: "Email",
+                      icon: Icons.email,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildInputField(
+                      controller: _passwordController,
+                      label: "Password",
+                      icon: Icons.lock,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomAppColors.buttonPrimary,
+                        foregroundColor: CustomAppColors.buttonText,
+                        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 8,
+                      ),
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  )
-                ],
+                    const SizedBox(height: 30),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const RegisterPage()),
+                        );
+                      },
+                      child: const Text(
+                        "Don't have an account? Register here",
+                        style: TextStyle(
+                          color: CustomAppColors.textSecondary,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
