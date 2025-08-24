@@ -4,6 +4,7 @@ import '../controllers/step_controller.dart';
 class StepBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => StepController());
+    // Lazy put the controller when needed
+    Get.lazyPut<StepController>(() => StepController());
   }
 }

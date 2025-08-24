@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import '../../steps/views/step_home_view.dart';
 import '../../../core/services/storage_service.dart';
 import '../services/auth_service.dart';
 
@@ -15,7 +14,7 @@ class AuthController extends GetxController {
       isLoading.value = true;
       final token = await _authService.login(email, password);
       await StorageService.saveToken(token);
-      Get.offAll(() => StepHomeView());
+      Get.offAllNamed('/home');
     } on DioException catch (e) {
       // DioException has useful info
       final status = e.response?.statusCode ?? 'No Status';

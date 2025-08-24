@@ -1,8 +1,8 @@
+import 'package:fit_tracker/core/bindings/initial_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'features/routes/app_pages.dart';
 import 'core/services/storage_service.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Health Tracker',
       debugShowCheckedModeBanner: false,
+      initialBinding: InitialBinding(), // <-- Register AuthController globally
       initialRoute: initialRoute,
       getPages: AppPages.pages,
     );
