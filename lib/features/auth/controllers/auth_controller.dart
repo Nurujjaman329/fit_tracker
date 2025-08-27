@@ -1,9 +1,10 @@
 import 'dart:developer';
-
-import 'package:dio/dio.dart';
+import 'package:fit_tracker/core/config/app_colors.dart';
+import 'package:fit_tracker/core/utils/error_handler.dart';
 import 'package:get/get.dart';
 import '../../../core/services/storage_service.dart';
 import '../services/auth_service.dart';
+
 
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
@@ -14,17 +15,18 @@ class AuthController extends GetxController {
       isLoading.value = true;
       final token = await _authService.login(email, password);
       await StorageService.saveToken(token);
+
       Get.offAllNamed('/home');
-    } on DioException catch (e) {
-      // DioException has useful info
-      final status = e.response?.statusCode ?? 'No Status';
-      final data = e.response?.data ?? e.message;
-      Get.snackbar('Dio Error [$status]', data.toString());
-      log('DioException Status: $status');
-      log('DioException Response: $data');
+      Get.snackbar(
+        'Success',
+        'Login successful',
+        backgroundColor: AppColors.success.withOpacity(0.1),
+        colorText: AppColors.success,
+      );
     } catch (e) {
-      Get.snackbar('Error', e.toString());
-      log('General Exception: $e');
+      final message = ErrorHandler.getFriendlyMessage(e);
+      _showError(message);
+      log('Login Exception: $e');
     } finally {
       isLoading.value = false;
     }
@@ -34,16 +36,18 @@ class AuthController extends GetxController {
     try {
       isLoading.value = true;
       await _authService.register(name, email, password);
-      Get.back(); // Go back to login
-    } on DioException catch (e) {
-      final status = e.response?.statusCode ?? 'No Status';
-      final data = e.response?.data ?? e.message;
-      Get.snackbar('Dio Error [$status]', data.toString());
-      log('DioException Status: $status');
-      log('DioException Response: $data');
+
+      Get.back(); // Return to login page
+      Get.snackbar(
+        'Success',
+        'Registration successful, please login.',
+        backgroundColor: AppColors.success.withOpacity(0.1),
+        colorText: AppColors.success,
+      );
     } catch (e) {
-      Get.snackbar('Error', e.toString());
-      log('General Exception: $e');
+      final message = ErrorHandler.getFriendlyMessage(e);
+      _showError(message);
+      log('Register Exception: $e');
     } finally {
       isLoading.value = false;
     }
@@ -52,10 +56,27 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     await StorageService.removeToken();
     Get.offAllNamed('/login');
+    Get.snackbar(
+      'Logged Out',
+      'You have successfully logged out.',
+      backgroundColor: AppColors.background.withOpacity(0.1),
+      colorText: AppColors.textPrimary,
+    );
   }
 
   Future<bool> checkLogin() async {
     final token = await StorageService.getToken();
     return token != null;
+  }
+
+  void _showError(String message) {
+    Get.snackbar(
+      'Error',
+      message,
+      backgroundColor: AppColors.error.withOpacity(0.1),
+      colorText: AppColors.error,
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 3),
+    );
   }
 }
